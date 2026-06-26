@@ -7,9 +7,8 @@ import { v4 as uuidv4 } from "uuid"
 
 const createTicket = asyncHandler(async (req, res) => {
   const { title, description, issueType, priority } = req.body;
-  console.log("req.user:", req.user);
-console.log("req.user.id:", req.user?.id);
-  const userId = req.user.id;
+  
+  const userId = req.user.user_id;
 
   const ticket = await supportService.createTicket({
     userId,
