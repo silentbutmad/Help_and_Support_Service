@@ -17,11 +17,14 @@ const createTicket = async ({ userId, title, description, issueType, priority })
 
     await sendTicketCreatedNotification(ticket, null);
 
-    logger.info(`Ticket created successfully: ${ticket.id}`);
     return ticket;
   } catch (error) {
-    logger.error(`Error creating ticket: ${error.message}`);
-    throw new Error('Failed to create ticket');
+    console.error("========== PRISMA ERROR ==========");
+    console.error(error);
+    console.error(error.message);
+    console.error(error.stack);
+
+    throw error;
   }
 };
 
