@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 5003;
 const eureka = new Eureka({
 
   instance: {
-    app: "HELP_SUPPORT-SERVICE",
+    app: "HELPSUPPORT-SERVICE",
     hostName: "help-and-support-service.onrender.com",
     ipAddr: "0.0.0.0",
 
@@ -19,7 +19,7 @@ const eureka = new Eureka({
       "@enabled": true
     },
 
-    vipAddress: "HELP&SUPPORT-SERVICE",
+    vipAddress: "HELPSUPPORT-SERVICE",
 
     dataCenterInfo: {
       name: "MyOwn",
