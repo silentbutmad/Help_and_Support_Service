@@ -120,17 +120,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  email: 'email',
-  password: 'password',
-  role: 'role',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.AdminScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -168,6 +157,7 @@ exports.Prisma.TicketScalarFieldEnum = {
 exports.Prisma.CommentScalarFieldEnum = {
   id: 'id',
   ticketId: 'ticketId',
+  userId: 'userId',
   message: 'message',
   createdAt: 'createdAt'
 };
@@ -204,12 +194,6 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.UserRole = exports.$Enums.UserRole = {
-  USER: 'USER',
-  SUPPORT_AGENT: 'SUPPORT_AGENT',
-  ADMIN: 'ADMIN'
-};
-
 exports.IssueType = exports.$Enums.IssueType = {
   PAYMENT: 'PAYMENT',
   LOGIN: 'LOGIN',
@@ -235,7 +219,6 @@ exports.TicketStatus = exports.$Enums.TicketStatus = {
 };
 
 exports.Prisma.ModelName = {
-  User: 'User',
   Admin: 'Admin',
   Agent: 'Agent',
   Ticket: 'Ticket',

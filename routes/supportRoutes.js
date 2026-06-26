@@ -6,7 +6,7 @@ import { isTicketOwnerOrAdminOrAgent, canManageTickets } from "../middleware/aut
 import { ticketLimiter } from "../middleware/rateLimiter.js";
 
 router.post('/tickets', verifyToken, ticketLimiter, createTicket);
-router.get('/tickets/user/:userId', verifyToken, isTicketOwnerOrAdminOrAgent, getUserTickets);
+router.get('/tickets', verifyToken, getUserTickets);
 router.get('/tickets/:id', verifyToken, isTicketOwnerOrAdminOrAgent, getTicketById);
 router.patch('/tickets/:id/status', verifyToken, canManageTickets, updateTicketStatus);
 router.patch('/tickets/:id/assign', verifyToken, canManageTickets, assignTicket);

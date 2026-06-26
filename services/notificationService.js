@@ -54,11 +54,11 @@ export const sendEmail = async (to, subject, html) => {
   }
 };
 
-export const sendTicketCreatedNotification = async (ticket) => {
+export const sendTicketCreatedNotification = async (ticket, userEmail) => {
   const subject = `Support Ticket Created - ${ticket.id}`;
   const html = `
     <h2>Support Ticket Created</h2>
-    <p>Dear ${ticket.user.name},</p>
+    <p>Dear User,</p>
     <p>Your support ticket has been created successfully.</p>
     <h3>Ticket Details:</h3>
     <ul>
@@ -73,14 +73,14 @@ export const sendTicketCreatedNotification = async (ticket) => {
     <p>Thank you for contacting us!</p>
   `;
 
-  await sendEmail(ticket.user.email, subject, html);
+  await sendEmail(userEmail, subject, html);
 };
 
 export const sendTicketAssignedNotification = async (ticket, agent) => {
   const subject = `Ticket Assigned - ${ticket.id}`;
   const html = `
     <h2>Ticket Assigned to You</h2>
-    <p>Dear ${agent.name},</p>
+    <p>Dear Agent,</p>
     <p>A support ticket has been assigned to you.</p>
     <h3>Ticket Details:</h3>
     <ul>
@@ -90,7 +90,7 @@ export const sendTicketAssignedNotification = async (ticket, agent) => {
       <li><strong>Issue Type:</strong> ${ticket.issueType}</li>
       <li><strong>Priority:</strong> ${ticket.priority}</li>
       <li><strong>Status:</strong> ${ticket.status}</li>
-      <li><strong>User:</strong> ${ticket.user.name} (${ticket.user.email})</li>
+      <li><strong>User ID:</strong> ${ticket.userId}</li>
     </ul>
     <p>Please review and take necessary action.</p>
   `;
@@ -98,11 +98,11 @@ export const sendTicketAssignedNotification = async (ticket, agent) => {
   await sendEmail(agent.email, subject, html);
 };
 
-export const sendStatusChangeNotification = async (ticket, oldStatus, newStatus) => {
+export const sendStatusChangeNotification = async (ticket, oldStatus, newStatus, userEmail) => {
   const subject = `Ticket Status Updated - ${ticket.id}`;
   const html = `
     <h2>Ticket Status Updated</h2>
-    <p>Dear ${ticket.user.name},</p>
+    <p>Dear User,</p>
     <p>Your support ticket status has been updated.</p>
     <h3>Ticket Details:</h3>
     <ul>
@@ -114,14 +114,14 @@ export const sendStatusChangeNotification = async (ticket, oldStatus, newStatus)
     <p>You can view the updated ticket in the support section.</p>
   `;
 
-  await sendEmail(ticket.user.email, subject, html);
+  await sendEmail(userEmail, subject, html);
 };
 
-export const sendNewCommentNotification = async (ticket, comment) => {
+export const sendNewCommentNotification = async (ticket, comment, userEmail) => {
   const subject = `New Comment on Ticket - ${ticket.id}`;
   const html = `
     <h2>New Comment Added</h2>
-    <p>Dear ${ticket.user.name},</p>
+    <p>Dear User,</p>
     <p>A new comment has been added to your support ticket.</p>
     <h3>Ticket Details:</h3>
     <ul>
@@ -130,11 +130,11 @@ export const sendNewCommentNotification = async (ticket, comment) => {
     </ul>
     <h3>Comment:</h3>
     <p>${comment.message}</p>
-    <p><strong>Added by:</strong> ${comment.user.name}</p>
+    <p><strong>Added by:</strong> User ID: ${comment.userId}</p>
     <p><strong>Time:</strong> ${new Date(comment.createdAt).toLocaleString()}</p>
   `;
 
-  await sendEmail(ticket.user.email, subject, html);
+  await sendEmail(userEmail, subject, html);
 };
 
 export const sendWhatsAppNotification = async (phoneNumber, message) => {

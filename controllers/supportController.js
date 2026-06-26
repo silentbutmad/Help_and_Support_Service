@@ -27,7 +27,7 @@ const createTicket = asyncHandler(async (req, res) => {
 });
 
 const getUserTickets = asyncHandler(async (req, res) => {
-  const userId = req.params.userId;
+  const userId = req.user.id;
   const { status, priority, issueType, page = 1, limit = 10 } = req.query;
 
   const result = await supportService.getUserTickets(userId, {

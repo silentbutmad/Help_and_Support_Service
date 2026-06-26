@@ -12,19 +12,10 @@ const createTicket = async ({ userId, title, description, issueType, priority })
         description,
         issueType,
         priority
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        }
       }
     });
 
-    await sendTicketCreatedNotification(ticket);
+    await sendTicketCreatedNotification(ticket, null);
 
     logger.info(`Ticket created successfully: ${ticket.id}`);
     return ticket;
@@ -54,20 +45,11 @@ const getUserTickets = async (userId, filters) => {
         orderBy: {
           createdAt: 'desc'
         },
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true
-            }
+        comments: {
+          orderBy: {
+            createdAt: 'desc'
           },
-          comments: {
-            orderBy: {
-              createdAt: 'desc'
-            },
-            take: 1
-          }
+          take: 1
         }
       }),
       prisma.ticket.count({ where })
@@ -89,23 +71,14 @@ const getTicketById = async (ticketId) => {
   try {
     const ticket = await prisma.ticket.findUnique({
       where: { id: ticketId },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        },
-        comments: {
-          orderBy: {
-            createdAt: 'desc'
-          }
-        },
-        history: {
-          orderBy: {
-            createdAt: 'desc'
-          }
+      comments: {
+        orderBy: {
+          createdAt: 'desc'
+        }
+      },
+      history: {
+        orderBy: {
+          createdAt: 'desc'
         }
       }
     });
@@ -135,16 +108,7 @@ const updateTicketStatus = async (ticketId, newStatus, changedBy) => {
 
     const updatedTicket = await prisma.ticket.update({
       where: { id: ticketId },
-      data: { status: newStatus },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        }
-      }
+      data: { status: newStatus }
     });
 
     await prisma.ticketHistory.create({
@@ -156,7 +120,7 @@ const updateTicketStatus = async (ticketId, newStatus, changedBy) => {
       }
     });
 
-    await sendStatusChangeNotification(updatedTicket, oldStatus, newStatus);
+    await sendStatusChangeNotification(updatedTicket, oldStatus, newStatus, null);
 
     logger.info(`Ticket status updated: ${ticketId} from ${oldStatus} to ${newStatus}`);
     return updatedTicket;
@@ -169,29 +133,15 @@ const updateTicketStatus = async (ticketId, newStatus, changedBy) => {
 const assignTicket = async (ticketId, agentId, assignedBy) => {
   try {
     const ticket = await prisma.ticket.findUnique({
-      where: { id: ticketId },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        }
-      }
+      where: { id: ticketId }
     });
 
     if (!ticket) {
       throw new Error('Ticket not found');
     }
 
-    const agent = await prisma.user.findUnique({
-      where: { id: agentId },
-      select: {
-        id: true,
-        name: true,
-        email: true
-      }
+    const agent = await prisma.agent.findUnique({
+      where: { id: agentId }
     });
 
     if (!agent) {
@@ -203,15 +153,6 @@ const assignTicket = async (ticketId, agentId, assignedBy) => {
       data: {
         assignedAgent: agentId,
         status: 'IN_PROGRESS'
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        }
       }
     });
 
@@ -237,16 +178,7 @@ const assignTicket = async (ticketId, agentId, assignedBy) => {
 const addComment = async (ticketId, message, userId) => {
   try {
     const ticket = await prisma.ticket.findUnique({
-      where: { id: ticketId },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        }
-      }
+      where: { id: ticketId }
     });
 
     if (!ticket) {
@@ -256,21 +188,12 @@ const addComment = async (ticketId, message, userId) => {
     const comment = await prisma.comment.create({
       data: {
         ticketId,
-        message,
-        userId
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        }
+        userId,
+        message
       }
     });
 
-    await sendNewCommentNotification(ticket, comment);
+    await sendNewCommentNotification(ticket, comment, null);
 
     logger.info(`Comment added to ticket: ${ticketId}`);
     return comment;
@@ -299,15 +222,6 @@ const getComments = async (ticketId, { page, limit }) => {
         take: limit,
         orderBy: {
           createdAt: 'desc'
-        },
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true
-            }
-          }
         }
       }),
       prisma.comment.count({ where: { ticketId } })
