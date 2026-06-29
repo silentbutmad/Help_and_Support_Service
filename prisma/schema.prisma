@@ -31,36 +31,9 @@ enum IssueType {
   OTHER
 }
 
-enum UserRole {
-  USER
-  SUPPORT_AGENT
-  ADMIN
-}
 
-model Admin {
-  id          String   @id @default(uuid())
-  userId      String   @unique
-  permissions String?  @default("full")
-  lastLogin   DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 
-  @@map("admins")
-}
 
-model Agent {
-  id            String    @id @default(uuid())
-  userId        String    @unique
-  department    String?
-  specialization String?
-  isAvailable   Boolean   @default(true)
-  ticketsAssigned Int      @default(0)
-  lastLogin     DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  @@map("agents")
-}
 
 model Ticket {
   id            String        @id @default(uuid())

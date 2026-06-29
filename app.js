@@ -8,7 +8,6 @@ import { notFound,errorHandler } from "./middleware/errorMiddleware.js";
 import supportRoutes from "./routes/supportRoutes.js"
 import faqRoutes from "./routes/faqRoutes.js"
 import analyticsRoutes from './routes/analyticsRoutes.js'
-import userManagementRoutes from './routes/userManagementRoutes.js'
 import logger from "./utils/logger.js"
 
 dotenv.config()
@@ -39,7 +38,6 @@ app.get('/health', (req, res) => {
 app.use('/support', supportRoutes);
 app.use('/support', faqRoutes);
 app.use('/support', analyticsRoutes);
-app.use('/support', userManagementRoutes);
 
 app.use(notFound);
 
