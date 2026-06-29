@@ -6,7 +6,7 @@ const eureka = new Eureka({
 
   instance: {
     app: "HELPSUPPORT-SERVICE",
-    hostName: "help-and-support-service.onrender.com",
+    hostName: "help-and-support-service-lhek.onrender.com",
     ipAddr: "0.0.0.0",
 
     port: {
