@@ -13,13 +13,9 @@ import logger from "./utils/logger.js"
 dotenv.config()
 const app = express();
 
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : '*',
-  credentials: true,
-  optionsSuccessStatus: 200
-};
 
-app.use(cors(corsOptions));
+
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -44,13 +40,13 @@ app.use(notFound);
 app.use(errorHandler);
 
 app.listen(5003, () => {
-  console.log("Expense Service running on port 5000")
+  console.log("help and support Service running on port 5000")
 
   eureka.start((error) => {
     if (error) {
       console.log("Eureka registration failed:", error);
     } else {
-      console.log("AUTH-SERVICE registered with Eureka");
+      console.log("Help and support service registered with Eureka");
     }
   });
 
