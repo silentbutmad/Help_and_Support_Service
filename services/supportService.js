@@ -45,14 +45,12 @@ const getUserTickets = async (userId, filters) => {
         where,
         skip,
         take: limit,
-        orderBy: {
-          createdAt: 'desc'
-        },
-        comments: {
-          orderBy: {
-            createdAt: 'desc'
-          },
-          take: 1
+        orderBy: { createdAt: 'desc' },
+        include: {
+          comments: {  // ✅ Correct - inside include
+            orderBy: { createdAt: 'desc' },
+            take: 1
+          }
         }
       }),
       prisma.ticket.count({ where })
