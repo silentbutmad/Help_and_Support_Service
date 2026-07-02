@@ -68,7 +68,7 @@ export const isTicketOwnerOrAdminOrAgent = async (req, res, next) => {
 
     const userRole = req.user.role;
     const ticketId = req.params.id;
-    const userId = req.user.id;
+    const userId = req.user.user_id;
 
     // Admin and agents have full access
     if (userRole === 'ADMIN' || userRole === 'SUPPORT_AGENT') {

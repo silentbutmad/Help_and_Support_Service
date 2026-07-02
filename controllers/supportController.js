@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid"
 const createTicket = asyncHandler(async (req, res) => {
   const { title, description, issueType, priority } = req.body;
   
-  const userId = req.user.id;
+  const userId = req.user.user_id;
 
   const ticket = await supportService.createTicket({
     userId,
@@ -28,7 +28,7 @@ const createTicket = asyncHandler(async (req, res) => {
 });
 
 const getUserTickets = asyncHandler(async (req, res) => {
-  const userId = req.user.id;
+  const userId = req.user.user_id;
   const { status, priority, issueType, page = 1, limit = 10 } = req.query;
 
   const result = await supportService.getUserTickets(userId, {
@@ -65,7 +65,7 @@ const getTicketById = asyncHandler(async (req, res) => {
 const updateTicketStatus = asyncHandler(async (req, res) => {
   const ticketId = req.params.id;
   const { status } = req.body;
-  const changedBy = req.user.id;
+  const changedBy = req.user.user_id;
 
   const ticket = await supportService.updateTicketStatus(ticketId, status, changedBy);
 
@@ -81,7 +81,7 @@ const updateTicketStatus = asyncHandler(async (req, res) => {
 const assignTicket = asyncHandler(async (req, res) => {
   const ticketId = req.params.id;
   const { agentId } = req.body;
-  const assignedBy = req.user.id;
+  const assignedBy = req.user.user_id;
 
   const ticket = await supportService.assignTicket(ticketId, agentId, assignedBy);
 
@@ -97,7 +97,7 @@ const assignTicket = asyncHandler(async (req, res) => {
 const addComment = asyncHandler(async (req, res) => {
   const ticketId = req.params.id;
   const { message } = req.body;
-  const userId = req.user.id;
+  const userId = req.user.user_id;
 
   const comment = await supportService.addComment(ticketId, message, userId);
 
