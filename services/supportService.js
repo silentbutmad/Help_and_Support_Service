@@ -65,6 +65,7 @@ const getUserTickets = async (userId, filters) => {
       limit
     };
   } catch (error) {
+    console.log(error.message);
     logger.error(`Error fetching user tickets: ${error.message}`);
     throw new Error('Failed to fetch tickets');
   }
